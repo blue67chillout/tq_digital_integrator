@@ -85,7 +85,7 @@ module integrator_core #(
                         overflow_flag <= 1'b1;
                     end else begin
                         acc_out <= acc_next;
-                        //overflow_flag <= 1'b0;
+                        overflow_flag <= 1'b0;
                     end
                 end else begin
                     acc_out <= acc_next; // wrap-around natural
