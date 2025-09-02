@@ -19,7 +19,7 @@ project:
   source_files:
     - "peripheral.v"
     - "tt_wrapper.v"
-    - "intergrator_core.v"
+    - "integrator_core.v"
     - "test_harness/falling_edge_detector.sv"
     - "test_harness/rising_edge_detector.sv"
     - "test_harness/reclocking.sv"
