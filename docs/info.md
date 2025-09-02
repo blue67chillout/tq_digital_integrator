@@ -42,7 +42,10 @@ The accumulator is 16 bits wide, and the peripheral exposes control, status, and
 	```sh
 	cd test
 	make MODULE=test TOPLEVEL=tt_wrapper
-    or just 
+    ```
+    or just
+    ```sh
+	cd test 
     make -B
 	```
 2. The testbench will:
