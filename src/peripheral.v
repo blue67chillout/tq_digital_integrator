@@ -65,7 +65,7 @@ module tqvp_integrator (
         .decay_shift(DECAY_SHIFT),
         .sat_enable(CTRL[3]),
         .sat_pos(16'sh7FFF),
-        .sat_neg(-16'sh8000),
+        .sat_neg(16'sh8000),
         .acc_out(acc_out),
         .overflow_flag(overflow_flag)
     );
@@ -116,5 +116,7 @@ module tqvp_integrator (
     // Output pins (demo: low 8 bits of accumulator)
     // -------------------------------------------------
     assign uo_out = acc_out[7:0];
+
+    
 
 endmodule

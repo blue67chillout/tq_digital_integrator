@@ -29,16 +29,41 @@ module integrator_core #(
     wire signed [ACC_W-1:0] y_decay;
     assign y_decay = acc_out - (acc_out >>> decay_shift);
 
+    // always @(*) begin
+    //     acc_next = acc_out;
+    //     if (enable && sample_strobe) begin
+    //         if (leaky_mode)
+    //             acc_next = y_decay + sample_ext;
+    //         else
+    //             acc_next = acc_out + sample_ext;
+    //     end
+    //     // saturation handled in clocked process for single cycle stable behavior
+    // end
+
+    reg sample_strobe_prev;
+    wire sample_strobe_rise;
+    assign sample_strobe_rise = sample_strobe & ~sample_strobe_prev;
+
+    // leaky calc as before...
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)
+            sample_strobe_prev <= 1'b0;
+        else
+            sample_strobe_prev <= sample_strobe;
+    end
+
     always @(*) begin
         acc_next = acc_out;
-        if (enable && sample_strobe) begin
+        if (enable && sample_strobe_rise) begin
             if (leaky_mode)
                 acc_next = y_decay + sample_ext;
             else
                 acc_next = acc_out + sample_ext;
         end
-        // saturation handled in clocked process for single cycle stable behavior
+        // saturation handled as before...
     end
+
 
     // clocked update with saturation and overflow detection
     always @(posedge clk or negedge rst_n) begin
@@ -60,7 +85,7 @@ module integrator_core #(
                         overflow_flag <= 1'b1;
                     end else begin
                         acc_out <= acc_next;
-                        overflow_flag <= 1'b0;
+                        //overflow_flag <= 1'b0;
                     end
                 end else begin
                     acc_out <= acc_next; // wrap-around natural
@@ -69,4 +94,17 @@ module integrator_core #(
             end
         end
     end
+
+    // always @(posedge clk) begin
+    // $display("sample_in = %0d, sample_ext = %0d", sample_in, sample_ext);
+    // end
+    // DEBUG: Print the overflow flag state on every clock cycle
+    // always @(posedge clk) begin
+    //     if (enable) begin
+    //         $display("Time=%t, enable=%b, sat_enable=%b, sample_strobe_rise=%b, acc_next=%d, acc_out=%d, overflow_flag=%b",
+    //                  $time, enable, sat_enable, sample_strobe_rise, acc_next, acc_out, overflow_flag);
+    //     end
+    // end
 endmodule
+
+
