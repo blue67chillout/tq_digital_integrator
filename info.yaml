@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
-  discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  title:        "digital_integrator"      # Project title
+  author:       "Kushal"      # Your name
+  discord:      "blue47chillout"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
+  description:  "it is basically an accumulator in dsp terms"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     64000000  # Clock frequency in Hz (or 0 if not applicable)
 
@@ -19,6 +19,7 @@ project:
   source_files:
     - "peripheral.v"
     - "tt_wrapper.v"
+    - "intergrator_core.v"
     - "test_harness/falling_edge_detector.sv"
     - "test_harness/rising_edge_detector.sv"
     - "test_harness/reclocking.sv"
