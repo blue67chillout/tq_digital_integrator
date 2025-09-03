@@ -2,7 +2,7 @@
  * Copyright (c) 2025 Michael Bell
  * SPDX-License-Identifier: Apache-2.0
  */
-
+`timescale 1ns / 1ps
 `default_nettype none
 
 /** TinyQV peripheral test using SPI */
