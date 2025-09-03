@@ -111,10 +111,6 @@ async def test_project(dut):
         await tqv.write_reg(REG_CTRL, 0x1)    # Clear strobe (enable only)
         await ClockCycles(dut.clk, 1)         # Wait
 
-
-
-
-
     acc_lo = await tqv.read_reg(REG_ACC_LOW)
     acc_hi = await tqv.read_reg(REG_ACC_HIGH)
     acc_val = (acc_hi << 8) | acc_lo
@@ -142,16 +138,16 @@ async def test_project(dut):
     assert (status & 0x2) != 0  # bit1 = threshold flag
 
     # Test overflow/saturation
-    # dut._log.info("Check overflow flag with saturation")
-    # await tqv.write_reg(REG_CTRL, 0x9)  # enable + sat_enable
-    # for _ in range(300):
-    #     await tqv.write_reg(REG_INPUT, 127)
-    #     await tqv.write_reg(REG_CTRL, 0xB)  # enable+strobe+sat
-    #     await ClockCycles(dut.clk, 1)
-    #     await tqv.write_reg(REG_CTRL, 0x9)
+    dut._log.info("Check overflow flag with saturation")
+    await tqv.write_reg(REG_CTRL, 0x9)  # enable + sat_enable
+    for _ in range(260):
+        await tqv.write_reg(REG_INPUT, 127)
+        await tqv.write_reg(REG_CTRL, 0xB)  # enable+strobe+sat
+        await ClockCycles(dut.clk, 1)
+        await tqv.write_reg(REG_CTRL, 0x9)
 
-    # status = await tqv.read_reg(REG_STATUS)
-    # dut._log.info(f"STATUS after saturation = {status:02x}")
-    # assert (status & 0x1) != 0  # bit0 = overflow flag
+    status = await tqv.read_reg(REG_STATUS)
+    dut._log.info(f"STATUS after saturation = {status:02x}")
+    assert (status & 0x1) != 0  # bit0 = overflow flag
 
     dut._log.info("Integrator peripheral test PASSED")
