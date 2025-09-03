@@ -76,12 +76,6 @@ module integrator_core #(
         end
     end
 
-    // DEBUG: Print key internal states on every clock cycle
-    always @(posedge clk) begin
-        if (enable) begin
-            $display("TIME=%t | ACC_CALC=%d | ACC_OUT=%d | OVERFLOW=%b", $time, acc_calc, acc_out, overflow_flag);
-        end
-    end
 
 endmodule
 
