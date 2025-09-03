@@ -40,7 +40,7 @@ module tqvp_integrator (
     wire signed [15:0] acc_out;
     wire overflow_flag;
 
-        // UI_IN usage:
+    // UI_IN usage:
     // bit7 = external strobe, bit6 = external enable, bits[5:0] = external data
     wire ext_enable = ui_in[6];
     wire ext_strobe = ui_in[7];
