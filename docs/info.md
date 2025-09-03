@@ -39,22 +39,50 @@ The accumulator is 16 bits wide, and the peripheral exposes control, status, and
 ## How to test
 
 1. Run the cocotb testbench in `test/test.py`:
-	```sh
-	cd test
-	make MODULE=test TOPLEVEL=tt_wrapper
-    ```
-    or just
-    ```sh
-	cd test 
-    make -B
-	```
+		
+		```sh
+		cd test 
+		make -B
+		```
 2. The testbench will:
-	- Reset the peripheral
-	- Enable integration and add samples
-	- Check accumulator and status flags
-	- Test threshold and overflow behavior
+		- Reset the peripheral
+		- Enable integration and add samples
+		- Check accumulator and status flags
+		- Test threshold and overflow behavior
 
 See `test/test.py` for detailed test scenarios.
+
+### How to use this peripheral
+
+- **Enable the integrator:**  
+	Write `0x1` to the `CTRL` register (address `0x00`) to enable the integrator.
+
+- **Provide an input sample:**  
+	Write your signed 8-bit sample to the `INPUT` register (address `0x02`).
+
+- **Trigger a sample:**  
+	Set both enable and strobe bits in `CTRL` (`0x3`) to accept the input sample.
+
+- **Read the accumulator:**  
+	Read `ACC_LOW` (`0x03`) and `ACC_HIGH` (`0x04`) to get the 16-bit accumulator value.
+
+- **Set threshold:**  
+	Write your desired threshold value to the `THRESH` register (`0x05`).  
+	The status register (`0x01`) bit1 will be set when the accumulator exceeds this threshold.
+
+- **Enable leaky integration:**  
+	Write a nonzero value to `DECAY_SHIFT` (`0x06`).  
+	The accumulator will decay by `1/2^k` each sample.
+
+- **Enable saturation:**  
+	Set bit3 in `CTRL` (`0x08`) to enable saturation.  
+	The status register bit0 will be set if overflow occurs.
+
+- **Input/output via IOs:**  
+	You can also provide input samples through the `ui_in` port (dedicated input PMOD pins), and read the accumulator output from the `uo_out` port (dedicated output PMOD pins).  
+	
+
+See `test/test.py` for example usage and more details.
 
 ## External hardware
 
